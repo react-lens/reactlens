@@ -1,0 +1,20 @@
+# Source code (assuming we publish compiled dist)
+src/
+__tests__/
+
+# Configuration
+tsconfig.json
+vitest.config.ts
+.gitignore
+.npmignore
+
+# Artifacts & Development Docs
+brain/
+*.md
+!README.md
+!ARCHITECTURE.md
+
+# Local tests
+test-graph.dot
+test-graph.svg
+report.json

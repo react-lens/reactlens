@@ -1,0 +1,46 @@
+{
+  "name": "react-lens",
+  "version": "1.0.0",
+  "description": "Intelligent architectural analysis tool for React and Next.js applications.",
+  "main": "./dist/cli/index.js",
+  "bin": {
+    "react-lens": "./dist/cli/index.js"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "architecture",
+    "analysis",
+    "dependencies",
+    "circular-dependencies",
+    "zombie-components",
+    "refactoring"
+  ],
+  "author": "ReactLens Team",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/cli/index.ts analyze",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.28.0",
+    "@types/madge": "^5.0.3",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "fast-glob": "^3.3.3",
+    "madge": "^8.0.0"
+  }
+}
