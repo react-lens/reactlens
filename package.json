@@ -1,6 +1,6 @@
 {
   "name": "react-lens",
-  "version": "1.0.0",
+  "version": "1.2.0-beta.1",
   "description": "Intelligent architectural analysis tool for React and Next.js applications.",
   "main": "./dist/cli/index.js",
   "bin": {
@@ -19,9 +19,18 @@
   "author": "ReactLens Team",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-lens/react-lens.git"
+  },
+  "bugs": {
+    "url": "https://github.com/react-lens/react-lens/issues"
+  },
+  "homepage": "https://github.com/react-lens/react-lens#readme",
   "scripts": {
     "dev": "tsx src/cli/index.ts analyze",
     "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage"
