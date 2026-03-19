@@ -1,90 +1,83 @@
-# ReactLens: Advanced Architectural Analysis Engine
-
-[![npm version](https://img.shields.io/npm/v/@mohamed_fadl/reactlens?color=blue&style=flat-square)](https://www.npmjs.com/package/@mohamed_fadl/reactlens)
-[![build](https://img.shields.io/github/actions/workflow/status/react-lens/reactlens/ci.yml?style=flat-square)](https://github.com/react-lens/reactlens/actions)
-[![license](https://img.shields.io/npm/l/@mohamed_fadl/reactlens?style=flat-square)](LICENSE)
+# ReactLens
 
 > [!WARNING]
-> **Beta Version:** This tool is currently in beta. Features are subject to change, and we are continuously refining our analysis algorithms.
+> **Beta:** We're still refining the algorithms and adding features. Expect changes.
 
-ReactLens is a high-performance tool designed for deep architectural auditing of React and Next.js applications. It uses static AST analysis to give you a clear "X-ray" view of your project's health.
+ReactLens is a CLI tool that gives you a deep "X-ray" view of your React and Next.js projects. We use AST analysis to find complexity, circular dependencies, and unused files so you can keep your architecture clean.
 
-## 🚀 Quick Reference (TL;DR)
+## Quick Reference
 
-| Command | Description | Example |
+| Command | What it does | Example |
 | :--- | :--- | :--- |
-| `analyze` | Full architectural health audit | `reactlens analyze ./src` |
-| `graph` | Visual dependency graph (SVG/PNG) | `reactlens graph ./src --output architecture.svg` |
+| `analyze` | Full architectural audit | `reactlens analyze ./src` |
+| `graph` | Visualizes your dependencies | `reactlens graph ./src --output arch.svg` |
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install -g @mohamed_fadl/reactlens
 ```
 
-## 🛠️ Usage Examples
+## How to use it
 
 ```bash
-# Basic health check
+# Scan the current folder
 reactlens analyze
 
-# Enforce quality standards (fails if score < 80)
+# Set a quality gate (fails if score is under 80)
 reactlens analyze ./src --fail-under 80
 
-# Export for CI/CD integration
+# Export raw JSON for your CI/CD
 reactlens analyze --json report.json --silent
 ```
 
 ---
 
-## 🔧 System Requirements (Graphviz)
+## System Requirements (Graphviz)
 
-To use the `graph` command, you need **Graphviz (2.40+)** installed:
+If you want to use the `graph` command, you need **Graphviz (2.40+)**:
 
 - **Windows:** `winget install graphviz`
 - **macOS:** `brew install graphviz`
 - **Linux:** `sudo apt install graphviz`
 
 > [!TIP]
-> **Troubleshooting:** If the `graph` command fails, verify that the Graphviz `bin` folder is in your system's `PATH`.
+> If `graph` fails, double-check that Graphviz is in your system's PATH.
 
 ---
 
-## 📊 Detailed Commands
+## Command Details
 
 ### `reactlens analyze [path] [options]`
-Analyze architectural health, complexity, and dependencies.
+Starts the architectural analysis.
 
 **Options:**
-- `-j, --json [file]` : Output report in JSON format.
-- `-s, --silent` : Suppress visual terminal report.
-- `--fail-under <score>` : Exit with error if score is below the limit.
+- `-j, --json [file]` : Saves the report as JSON.
+- `-s, --silent` : Hides the terminal UI (great for scripts).
+- `--fail-under <score>` : Returns an error code if the score is too low.
 
-### 🧩 JSON Structure
-When using `--json`, the output follows this schema:
-- `summary`: High-level counts (Modules, Components).
+### JSON Schema
+If you're piping the JSON into other tools, here's what to look for:
+- `summary`: Component and module counts.
 - `metrics`: Scores for Complexity, Coupling, and Zombies.
-- `insights`: Detailed findings and refactoring recommendations.
-- `score`: The final architectural integrity percentage.
+- `insights`: Our suggestions for refactoring.
+- `score`: The overall health percentage.
 
 ### `reactlens graph [path] --output <file>`
-Visualize module relationships. Supports `.svg`, `.png`, and `.dot` formats.
+Creates a visual map of your modules. We support `.svg`, `.png`, and `.dot`.
 
 ---
 
-## 🧠 Understanding the Score
+## How we calculate the Score
 
-We calculate project health based on three pillars:
+We look at three main pillars:
 
-1.  **Complexity (40%)**: Analysis of component size and prop health.
-2.  **Coupling (40%)**: Detection of circular dependencies.
-3.  **Zombies (20%)**: Identification of unreachable/unused modules.
-
----
-
-## 📖 Deep Dive
-
-For technical details on algorithms and scoring, visit the [Engineering Reference](ENGINEERING.md).
+1.  **Complexity (40%)**: We check for massive components and "prop-heavy" code.
+2.  **Coupling (40%)**: We look for circular dependencies that tangle your codebase.
+3.  **Zombies (20%)**: We find files that aren't actually being used.
 
 ---
-*Maintained by the ReactLens Engineering Team.*
+
+## Technical Details
+
+If you're curious about the math or how we use Babel AST, check out our [Engineering Reference](ENGINEERING.md).
