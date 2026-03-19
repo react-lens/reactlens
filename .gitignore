@@ -37,3 +37,10 @@ Thumbs.db
 test-graph.dot
 test-graph.svg
 report.json
+
+# AI / Agent specific
+.gemini/
+.antigravity/
+.agents/
+.agent/
+*.tmp

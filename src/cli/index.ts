@@ -12,10 +12,13 @@ import { ComponentAnalyzer, ComponentMetrics } from '../analyzer/componentAnalyz
 import { DependencyAnalyzer } from '../analyzer/dependencyAnalyzer.js';
 import { TerminalReporter } from '../reporters/terminalReporter.js';
 import { InsightEngine } from '../analyzer/insightEngine.js';
+import { MetaAuditScanner } from '../audit/scanner.js';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 const program = new Command();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Main bootstrap function to initialize CLI commands
@@ -122,21 +125,18 @@ export async function bootstrap() {
     });
 
   program
-    .command('graph')
-    .description('Generate a visual dependency graph')
-    .argument('[path]', 'path to the project', '.')
-    .option('-o, --output <file>', 'output file path (e.g., graph.svg, graph.dot)', 'graph.svg')
-    .action(async (projectPath, options) => {
-      console.log(chalk.cyan(`Generating dependency graph for: ${projectPath}...`));
-      try {
-        const dependencyAnalyzer = new DependencyAnalyzer();
-        const rootPath = (new FileScanner() as any).detectProjectType ? projectPath : '.'; // Fallback logic
-        await dependencyAnalyzer.analyze(projectPath);
-        await dependencyAnalyzer.exportGraph(options.output);
-        console.log(chalk.green(`\nDependency graph successfully exported to: ${options.output}`));
-      } catch (error) {
-        console.error(chalk.red('\nGraph generation failed:'), error);
-        process.exit(1);
+    .command('audit')
+    .description('Run internal security audit (Development only)')
+    .option('--self', 'run audit on react-lens itself')
+    .action(async (options) => {
+      if (options.self) {
+        // Project root is 2 levels up from dist/cli/index.js or 1 level from src/cli/index.ts
+        const projectRoot = path.join(__dirname, '../../');
+        const scanner = new MetaAuditScanner(projectRoot);
+        const passed = await scanner.runAudit();
+        if (!passed) process.exit(1);
+      } else {
+        console.log(chalk.yellow('Please use --self to audit the tool itself.'));
       }
     });
 

@@ -30,7 +30,8 @@
   "scripts": {
     "dev": "tsx src/cli/index.ts analyze",
     "build": "tsc",
-    "prepublishOnly": "npm run build && npm test",
+    "audit:self": "tsx src/cli/index.ts audit --self",
+    "prepublishOnly": "npm run audit:self && npm run build && npm test",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage"
@@ -40,6 +41,7 @@
     "@types/madge": "^5.0.3",
     "@types/node": "^25.5.0",
     "@vitest/coverage-v8": "^4.1.0",
+    "eslint-plugin-security": "^4.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
