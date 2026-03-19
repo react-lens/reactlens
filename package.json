@@ -1,10 +1,10 @@
 {
-  "name": "react-lens",
-  "version": "1.2.0-beta.1",
+  "name": "@mohamed_fadl/reactlens",
+  "version": "1.2.0-beta.4",
   "description": "Intelligent architectural analysis tool for React and Next.js applications.",
   "main": "./dist/cli/index.js",
   "bin": {
-    "react-lens": "./dist/cli/index.js"
+    "reactlens": "./dist/cli/index.js"
   },
   "keywords": [
     "react",
@@ -21,12 +21,12 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-lens/react-lens.git"
+    "url": "git+https://github.com/react-lens/reactlens.git"
   },
   "bugs": {
-    "url": "https://github.com/react-lens/react-lens/issues"
+    "url": "https://github.com/react-lens/reactlens/issues"
   },
-  "homepage": "https://github.com/react-lens/react-lens#readme",
+  "homepage": "https://github.com/react-lens/reactlens#readme",
   "scripts": {
     "dev": "tsx src/cli/index.ts analyze",
     "build": "tsc",

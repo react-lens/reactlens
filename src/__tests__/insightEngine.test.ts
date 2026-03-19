@@ -15,7 +15,8 @@ describe('InsightEngine', () => {
         hookCount: 0,
         hooks: [],
         type: 'functional' as const,
-        isClientComponent: false
+        isClientComponent: false,
+        drilledProps: []
       }
     ];
 

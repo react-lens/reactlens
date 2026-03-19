@@ -12,7 +12,8 @@ import { ComponentAnalyzer, ComponentMetrics } from '../analyzer/componentAnalyz
 import { DependencyAnalyzer } from '../analyzer/dependencyAnalyzer.js';
 import { TerminalReporter } from '../reporters/terminalReporter.js';
 import { InsightEngine } from '../analyzer/insightEngine.js';
-import { MetaAuditScanner } from '../audit/scanner.js';
+// MetaAuditScanner is now imported dynamically in the audit command 
+// to ensure it can be safely stripped from the production NPM build.
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -130,11 +131,18 @@ export async function bootstrap() {
     .option('--self', 'run audit on react-lens itself')
     .action(async (options) => {
       if (options.self) {
-        // Project root is 2 levels up from dist/cli/index.js or 1 level from src/cli/index.ts
-        const projectRoot = path.join(__dirname, '../../');
-        const scanner = new MetaAuditScanner(projectRoot);
-        const passed = await scanner.runAudit();
-        if (!passed) process.exit(1);
+        try {
+          // Dynamic import allows this module to be stripped from NPM
+          // @ts-ignore
+          const { MetaAuditScanner } = await import('../audit/scanner.js');
+          const projectRoot = path.join(__dirname, '../../');
+          const scanner = new MetaAuditScanner(projectRoot);
+          const passed = await scanner.runAudit();
+          if (!passed) process.exit(1);
+        } catch (error) {
+          console.error(chalk.red('\n[ERROR] Security Audit module is only available in Development/Source mode.'));
+          process.exit(1);
+        }
       } else {
         console.log(chalk.yellow('Please use --self to audit the tool itself.'));
       }

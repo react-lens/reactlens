@@ -15,7 +15,7 @@ To use the visual graph generation features (`graph` command), you must have **G
 ## Installation
 
 ```bash
-npm install -g react-lens
+npm install -g @mohamed_fadl/reactlens
 ```
 
 ## Usage & Commands
@@ -24,7 +24,7 @@ npm install -g react-lens
 Analyze your project's architectural health, complexity, and dependencies.
 
 ```bash
-react-lens analyze [path] [options]
+reactlens analyze [path] [options]
 ```
 
 **Options:**
@@ -36,7 +36,7 @@ react-lens analyze [path] [options]
 Generate a visual representation of your project's module relationships.
 
 ```bash
-react-lens graph [path] --output <file.svg|file.dot>
+reactlens graph [path] --output <file.svg|file.dot>
 ```
 
 ## Logical Flow and Architecture

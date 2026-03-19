@@ -1,6 +1,7 @@
 # Source code (assuming we publish compiled dist)
 src/
 __tests__/
+dist/audit/
 
 # Configuration
 tsconfig.json

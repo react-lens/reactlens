@@ -10,6 +10,7 @@
     "module": "NodeNext",
     "target": "ES2022",
     "moduleResolution": "NodeNext",
+    "rootDir": "src",
     "outDir": "./dist",
     "types": ["node"],
     "lib": ["esnext"],
@@ -23,5 +24,7 @@
     "jsx": "react-jsx",
     "isolatedModules": true,
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "src/__tests__", "vitest.config.ts"]
 }
