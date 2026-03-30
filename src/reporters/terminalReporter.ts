@@ -69,7 +69,8 @@ export class TerminalReporter {
 
         console.log(`\n${color(label)} ${chalk.bold(rec.target)}`);
         console.log(`  ${chalk.white(rec.message)}`);
-        console.log(`  ${chalk.dim('↳')} ${chalk.green(rec.suggestion)}`);
+        console.log(`  ${chalk.dim('↳')} ${chalk.yellow('Impact:')} ${rec.technicalImpact}`);
+        console.log(`  ${chalk.dim('↳')} ${chalk.green('Fix:')} ${rec.solution}`);
       });
     } else {
       console.log('\n' + chalk.green('[OK] Architecture is healthy. No issues found.'));

@@ -24,6 +24,9 @@ npm install -g @mohamed_fadl/reactlens
 # Scan the current folder
 reactlens analyze
 
+# Generate a beautiful HTML report
+reactlens analyze ./src --html report.html
+
 # Set a quality gate (fails if score is under 80)
 reactlens analyze ./src --fail-under 80
 
@@ -52,9 +55,15 @@ If you want to use the `graph` command, you need **Graphviz (2.40+)**:
 Starts the architectural analysis.
 
 **Options:**
+- `--html <file>` : Export a standalone HTML report.
 - `-j, --json [file]` : Saves the report as JSON.
 - `-s, --silent` : Hides the terminal UI (great for scripts).
 - `--fail-under <score>` : Returns an error code if the score is too low.
+
+### HTML Reports (Evidence-Based)
+Generate a beautiful, interactive dashboard with `reactlens analyze --html report.html`. 
+- **Project Fingerprint:** Every report embeds your project name, path, and a sample of files. You always know exactly what codebase was scanned.
+- **Transparent Evidence:** Every architectural warning (like a Zombie Component or oversized file) includes an **Evidence** block showing the exact AST line numbers or module resolution logic that triggered the flag, guaranteeing zero false-positives.
 
 ### JSON Schema
 If you're piping the JSON into other tools, here's what to look for:

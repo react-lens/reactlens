@@ -19,7 +19,7 @@ describe('Dependency Intelligence Integration', () => {
     await fs.writeFile(path.join(tempDir, 'a.ts'), "import './b.js';");
     await fs.writeFile(path.join(tempDir, 'b.ts'), "import './a.js';");
 
-    const metrics = await analyzer.analyze(tempDir);
+    const metrics = await analyzer.analyze(tempDir, [path.join(tempDir, 'a.ts'), path.join(tempDir, 'b.ts')]);
     
     expect(metrics.circular.length).toBeGreaterThan(0);
     const cycle = metrics.circular[0]!;
@@ -34,7 +34,7 @@ describe('Dependency Intelligence Integration', () => {
     await fs.writeFile(path.join(tempDir, 'used.ts'), "export const x = 1;");
     await fs.writeFile(path.join(tempDir, 'zombie.ts'), "export const z = 1;");
 
-    const metrics = await analyzer.analyze(tempDir, 'index.ts');
+    const metrics = await analyzer.analyze(tempDir, [path.join(tempDir, 'index.ts'), path.join(tempDir, 'used.ts'), path.join(tempDir, 'zombie.ts')]);
     
     expect(metrics.zombieComponents).toContain('zombie.ts');
     expect(metrics.zombieComponents).not.toContain('used.ts');

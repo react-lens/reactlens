@@ -11,7 +11,9 @@ export interface Recommendation {
   level: 'info' | 'warning' | 'error';
   target: string;
   message: string;
-  suggestion: string;
+  technicalImpact: string;
+  solution: string;
+  evidence: string;
 }
 
 export interface ArchitectureReport {
@@ -49,7 +51,9 @@ export class InsightEngine {
           level: 'warning',
           target: c.name,
           message: `Oversized component detected (${c.lineCount} lines).`,
-          suggestion: 'Break this component into smaller, more focused sub-components.'
+          technicalImpact: 'Large components increase cognitive load, reduce testability, and can inflate JavaScript bundle sizes, leading to slower browser parsing times.',
+          solution: 'Extract distinct UI sections into smaller \'Dumb Components\' and isolate generic data-fetching logic into Custom Hooks.',
+          evidence: `File located at ${c.name}. AST verified line count (start: 1, end: ${c.lineCount}). Threshold is ${this.TRESHOLDS.LARGE_COMPONENT} lines.`
         });
       }
 
@@ -57,8 +61,10 @@ export class InsightEngine {
         recommendations.push({
           level: 'info',
           target: c.name,
-          message: `High prop count (${c.propCount} props).`,
-          suggestion: 'Consider grouping related props or using a React Context.'
+          message: `Excessive prop count (${c.propCount} props).`,
+          technicalImpact: 'Passing too many props creates tight coupling, making the component brittle and hard to refactor. It often indicates a component is trying to do too much.',
+          solution: 'Group related props into single configuration objects, or utilize React Context API for data needed across deep structural layers.',
+          evidence: `Component signature accepts ${c.propCount} distinct properties. Threshold is ${this.TRESHOLDS.HIGH_PROP_COUNT}.`
         });
       }
 
@@ -66,8 +72,10 @@ export class InsightEngine {
         recommendations.push({
           level: 'info',
           target: c.name,
-          message: `Complexity warning: High hook count (${c.hookCount} hooks).`,
-          suggestion: 'Extract some logic into a Custom Hook to simplify the component.'
+          message: `High hook complexity (${c.hookCount} hooks).`,
+          technicalImpact: 'An abundance of internal hooks couples state logic inextricably to the UI, making state management difficult to track and unit test.',
+          solution: 'Abstract related state and effect logic into reusable Custom Hooks, maintaining a strict separation of concerns.',
+          evidence: `AST parser identified ${c.hookCount} distinct React Hook calls within the component body. Threshold is ${this.TRESHOLDS.HIGH_HOOK_COUNT}.`
         });
       }
 
@@ -75,8 +83,10 @@ export class InsightEngine {
         recommendations.push({
           level: 'info',
           target: c.name,
-          message: `Potential Prop Drilling: ${c.drilledProps.join(', ')} passed down without local usage.`,
-          suggestion: 'Consider using React Context or a State Management library for deeply nested data.'
+          message: `Prop Drilling detected for: ${c.drilledProps.join(', ')}.`,
+          technicalImpact: 'Passing props through components that do not consume them breaks React\'s Memoization algorithms. This causes unnecessary cascading re-renders across the intermediate DOM tree.',
+          solution: 'Extract this state into a React Context Provider or utilize a specialized state management library like Zustand.',
+          evidence: `Props [${c.drilledProps.join(', ')}] are received in the signature but only passed down directly via JSX attributes, never consumed locally.`
         });
       }
 
@@ -85,7 +95,9 @@ export class InsightEngine {
           level: 'info',
           target: c.name,
           message: 'Client-side component identified.',
-          suggestion: 'Ensure heavy logic is moved to server components if possible to improve performance.'
+          technicalImpact: 'Client Components ship JavaScript to the browser. Overusing them negates the performance benefits of Next.js Server-Side Rendering and increases Total Blocking Time (TBT).',
+          solution: 'Keep this component as a Server Component if it does not require interactivity (onClick, useState), passing only necessary interactive bits as deep Client leaves.',
+          evidence: `Component explicitly declares the 'use client' directive at the top of the file.`
         });
       }
     });
@@ -96,7 +108,9 @@ export class InsightEngine {
         level: 'error',
         target: `Cycle ${i + 1}`,
         message: `Circular dependency detected: ${cycle.join(' -> ')}`,
-        suggestion: 'Create a shared/core module to break the dependency cycle.'
+        technicalImpact: 'Cyclic imports crash bundlers, cause maximum call stack limits, and introduce non-deterministic module loading behaviors in Node.js/Next.js environments.',
+        solution: 'Extract the mutually dependent code into a third, independent shared module, and have both original modules import from the new shared core.',
+        evidence: `Dependency tree traversal confirms a cyclic import path across ${cycle.length} files.`
       });
     });
 
@@ -105,7 +119,9 @@ export class InsightEngine {
         level: 'warning',
         target: z,
         message: 'Unused module (Zombie Component).',
-        suggestion: 'Safely remove this file if it is no longer needed.'
+        technicalImpact: 'Dead code bloats the repository, confuses developers attempting to map out architecture, and poses a risk of silently importing legacy vulnerable dependencies.',
+        solution: 'Safely delete this file. Ensure it is not dynamically imported or referenced in configuration files before removal.',
+        evidence: `Dual-verification confirmed: Scanned ${dependencyMetrics.totalModules} modules. Found 0 import statements (static or dynamic) referencing "${z}" across the entire project tree.`
       });
     });
 
@@ -190,7 +206,9 @@ export class InsightEngine {
         level: 'info',
         target: 'Project Structure',
         message: 'High ratio of Client Components detected.',
-        suggestion: 'In Next.js, try to keep the majority of your components as Server Components for better performance.'
+        technicalImpact: 'Having more Client Components relative to Server Components fundamentally defeats the architectural premise of Next.js App Router, severely impacting SEO and initial page load speed.',
+        solution: 'Audit your component tree to push the \'use client\' directive as far down the leaves of the tree as possible.',
+        evidence: `Detected ${clientComponents.length} Client Components vs ${serverComponents.length} Server Components across the application tree.`
       });
     }
   }

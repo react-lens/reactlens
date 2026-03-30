@@ -32,7 +32,7 @@ describe('InsightEngine', () => {
     const report = engine.generateReport(mockComponents, mockDeps);
     
     expect(report.recommendations).toHaveLength(2); // One for size, one for props
-    expect(report.recommendations[0]!.suggestion).toContain('Break this component');
+    expect(report.recommendations[0]!.solution).toContain('Extract distinct UI sections');
     expect(report.score).toBeLessThan(100);
   });
 

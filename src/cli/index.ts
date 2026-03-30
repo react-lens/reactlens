@@ -37,9 +37,11 @@ export async function bootstrap() {
     .option('-j, --json [file]', 'output report in JSON format (optional path to save to file)')
     .option('-s, --silent', 'suppress terminal report (best for piping JSON)')
     .option('-g, --graph <file>', 'output dependency graph to file (dot/svg)')
+    .option('--html [file]', 'output report as a static graphical HTML page')
+    .option('--ts-config <path>', 'path to specific tsconfig file for alias resolution')
     .option('--fail-under <score>', 'exit with error if score is below this value')
     .action(async (projectPath, options) => {
-      const isSilent = options.silent || (options.json === true);
+      const isSilent = options.silent || (options.json === true) || options.html;
       
       if (!isSilent) {
         console.log(chalk.cyan('Starting architectural analysis...'));
@@ -63,9 +65,9 @@ export async function bootstrap() {
           allComponentMetrics = [...allComponentMetrics, ...metrics];
         }
 
-        // 3. Dependency Analysis
+        // 3. Dependency Analysis (Dual Verification: Madge + Native ImportScanner)
         const dependencyAnalyzer = new DependencyAnalyzer();
-        const dependencyMetrics = await dependencyAnalyzer.analyze(projectInfo.rootPath, 'index.ts');
+        const dependencyMetrics = await dependencyAnalyzer.analyze(projectInfo.rootPath, projectInfo.files, options.tsConfig);
 
         // 4. Intelligence Insight Engine
         const insightEngine = new InsightEngine();
@@ -107,6 +109,19 @@ export async function bootstrap() {
             console.log(chalk.green(`\nDependency graph exported to: ${options.graph}`));
           } catch (err) {
             console.warn(chalk.yellow(`\nWarning: Could not export graph. Ensure Graphviz is installed for SVG/Images.`), err);
+          }
+        }
+
+        // 8. HTML Export
+        if (options.html) {
+          try {
+            const htmlFilePath = typeof options.html === 'string' ? options.html : 'reactlens-report.html';
+            const { HtmlReporter } = await import('../reporters/htmlReporter.js');
+            const htmlReporter = new HtmlReporter();
+            await htmlReporter.export(projectInfo, allComponentMetrics, dependencyMetrics, insightReport, htmlFilePath);
+            console.log(chalk.green(`\nHTML Report exported successfully to: ${htmlFilePath}`));
+          } catch (err) {
+            console.error(chalk.red('\nFailed to generate HTML report:'), err);
           }
         }
 
@@ -152,11 +167,8 @@ export async function bootstrap() {
 }
 
 // Start only if file is executed directly
-const isMain = process.argv[1] === fileURLToPath(import.meta.url) || process.argv[1]?.endsWith('index.ts');
-
-if (isMain) {
-  bootstrap().catch((err) => {
-    console.error(chalk.red('Fatal Error during execution:'), err);
-    process.exit(1);
-  });
-}
+// Start the CLI application
+bootstrap().catch((err) => {
+  console.error(chalk.red('Fatal Error during execution:'), err);
+  process.exit(1);
+});

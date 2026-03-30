@@ -25,7 +25,7 @@ describe('DependencyAnalyzer', () => {
     };
     (madge as any).mockResolvedValue(mockMadgeInstance);
 
-    const metrics = await analyzer.analyze('/root');
+    const metrics = await analyzer.analyze('/root', []);
     
     expect(metrics.circular).toHaveLength(1);
     expect(metrics.totalModules).toBe(3);
@@ -42,7 +42,7 @@ describe('DependencyAnalyzer', () => {
     };
     (madge as any).mockResolvedValue(mockMadgeInstance);
     
-    await analyzer.analyze('/root');
+    await analyzer.analyze('/root', []);
     const result = await analyzer.exportGraph('out.dot');
     expect(result).toBe('digraph {}');
     expect(mockMadgeInstance.dot).toHaveBeenCalledWith('out.dot');
@@ -58,7 +58,7 @@ describe('DependencyAnalyzer', () => {
     };
     (madge as any).mockResolvedValue(mockMadgeInstance);
 
-    const metrics = await analyzer.analyze('/root', 'index.ts');
+    const metrics = await analyzer.analyze('/root', []);
     expect(metrics.zombieComponents).not.toContain('index.ts');
     expect(metrics.zombieComponents).toHaveLength(0);
   });
