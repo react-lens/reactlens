@@ -2,7 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/@mohamed_fadl/reactlens?color=blue&label=NPM&logo=npm)](https://www.npmjs.com/package/@mohamed_fadl/reactlens)
 [![NPM Downloads](https://img.shields.io/npm/dm/@mohamed_fadl/reactlens?color=green&logo=npm)](https://www.npmjs.com/package/@mohamed_fadl/reactlens)
-[![License: MIT](https://img.shields.io/github/license/reactlens/reactlens?color=yellow)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/github/license/react-lens/react-lens?color=yellow)](https://opensource.org/licenses/MIT)
 [![Node.js Compatibility](https://img.shields.io/node/v/@mohamed_fadl/reactlens?color=darkgreen&logo=nodedotjs)](https://nodejs.org/)
 
 > [!WARNING]
