@@ -1,4 +1,9 @@
-# ReactLens
+# ReactLens 🔍
+
+[![NPM Version](https://img.shields.io/npm/v/@mohamed_fadl/reactlens?color=blue&label=NPM&logo=npm)](https://www.npmjs.com/package/@mohamed_fadl/reactlens)
+[![NPM Downloads](https://img.shields.io/npm/dm/@mohamed_fadl/reactlens?color=green&logo=npm)](https://www.npmjs.com/package/@mohamed_fadl/reactlens)
+[![License: MIT](https://img.shields.io/github/license/reactlens/reactlens?color=yellow)](https://opensource.org/licenses/MIT)
+[![Node.js Compatibility](https://img.shields.io/node/v/@mohamed_fadl/reactlens?color=darkgreen&logo=nodedotjs)](https://nodejs.org/)
 
 > [!WARNING]
 > **Beta:** We're still refining the algorithms and adding features. Expect changes.
@@ -34,8 +39,6 @@ reactlens analyze ./src --fail-under 80
 reactlens analyze --json report.json --silent
 ```
 
----
-
 ## System Requirements (Graphviz)
 
 If you want to use the `graph` command, you need **Graphviz (2.40+)**:
@@ -46,8 +49,6 @@ If you want to use the `graph` command, you need **Graphviz (2.40+)**:
 
 > [!TIP]
 > If `graph` fails, double-check that Graphviz is in your system's PATH.
-
----
 
 ## Command Details
 
@@ -75,8 +76,6 @@ If you're piping the JSON into other tools, here's what to look for:
 ### `reactlens graph [path] --output <file>`
 Creates a visual map of your modules. We support `.svg`, `.png`, and `.dot`.
 
----
-
 ## How we calculate the Score
 
 We look at three main pillars:
@@ -84,8 +83,6 @@ We look at three main pillars:
 1.  **Complexity (40%)**: We check for massive components and "prop-heavy" code.
 2.  **Coupling (40%)**: We look for circular dependencies that tangle your codebase.
 3.  **Zombies (20%)**: We find files that aren't actually being used.
-
----
 
 ## Technical Details
 
