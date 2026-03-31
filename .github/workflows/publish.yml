@@ -25,7 +25,6 @@ jobs:
 
     - name: Run Tests (Pre-publish Gate)
       run: npm test
-
     - name: Publish to NPM
       run: npm publish --access public --tag latest
       env:
