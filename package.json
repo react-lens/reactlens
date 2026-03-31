@@ -1,6 +1,6 @@
 {
   "name": "@mohamed_fadl/reactlens",
-  "version": "1.3.0-beta.2",
+  "version": "1.3.0-beta.3",
   "description": "Intelligent architectural analysis tool for React and Next.js applications.",
   "main": "./dist/cli/index.js",
   "bin": {
