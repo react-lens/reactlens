@@ -28,7 +28,6 @@ jobs:
 
     - name: Run Tests
       run: npm test
-
     - name: Publish to NPM
       run: npm publish --access public --tag latest --ignore-scripts
       env:
