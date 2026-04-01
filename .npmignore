@@ -11,9 +11,8 @@ vitest.config.ts
 
 # Artifacts & Development Docs
 brain/
-*.md
-!README.md
-!ARCHITECTURE.md
+ENGINEERING.md
+ARCHITECTURE.md
 
 # Local tests
 test-graph.dot
