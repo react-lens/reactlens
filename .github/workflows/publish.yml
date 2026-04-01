@@ -28,6 +28,14 @@ jobs:
 
     - name: Run Tests
       run: npm test
+
+    - name: Verify Package Contents
+      run: |
+        echo "=== Checking README.md ==="
+        ls -la README.md
+        echo "=== Package Contents ==="
+        npm pack --dry-run
+
     - name: Publish to NPM
       run: npm publish --access public --tag latest --ignore-scripts
       env:
